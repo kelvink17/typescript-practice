@@ -1,14 +1,12 @@
 import {  useState, type ChangeEvent } from "react"
-interface Ticket{
-  title: string,
-  description:string
-}
+import TicketCard from "./components/TicketCard"
+import type Tickets from "./type"
 export default function App(){
   const [form, setForm] = useState({
     title:"",
     description:""
   })
-  const [tickets, setTicket] = useState<Ticket[]>([])
+  const [tickets, setTicket] = useState<Tickets[]>([])
 
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
     const {value, name} = event.target
@@ -16,7 +14,7 @@ export default function App(){
   }
   const handleSubmit = (event: any) => {
     event.preventDefault()
-    const newTicket :Ticket = {
+    const newTicket :Tickets = {
       title: form.title,
       description: form.description
     }
@@ -46,16 +44,9 @@ const handleDelete = (id: number) => {
       <textarea name="description" value={form.description} onChange={handleChange} />
       <button> click</button> 
       </form>
-      {tickets.map ((item, index)=>{
-        return(
-        <article key={index}>
-          <h1>{item.title}</h1>
-          <p>{item.description}</p>
-          <button>Update</button>
-          <button onClick={()=> handleDelete(index)}>Delete</button>
-        </article>
-        )
-      })}
+      {tickets.map ((item, index)=>(
+        <TicketCard key={index} ticket={item} onDelete={handleDelete} index={index} />
+      ))}
     </div>
   )
 }
