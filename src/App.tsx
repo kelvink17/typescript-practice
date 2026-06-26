@@ -1,6 +1,8 @@
 import {  useState, type ChangeEvent } from "react"
+import { type FormEvent } from "react"
 import TicketCard from "./components/TicketCard"
 import type Tickets from "./type"
+import Form from "./components/Form"
 export default function App(){
   const [form, setForm] = useState({
     title:"",
@@ -12,8 +14,8 @@ export default function App(){
     const {value, name} = event.target
     setForm({...form, [name]: value})
   }
-  const handleSubmit = (event: any) => {
-    event.preventDefault()
+  const handleSubmit = (event:FormEvent<HTMLFormElement> ) => {
+     event.preventDefault()
     const newTicket :Tickets = {
       title: form.title,
       description: form.description
@@ -38,12 +40,7 @@ const handleDelete = (id: number) => {
 }
   return(
     <div>
-      <h1>My Ticket App</h1>
-      <form action="submit" onSubmit={handleSubmit}>
-      <input name="title" placeholder="name"  value={form.title} onChange={handleChange}/>
-      <textarea name="description" value={form.description} onChange={handleChange} />
-      <button> click</button> 
-      </form>
+      <Form handleChange={handleChange} handleSubmit={handleSubmit} form={form} />
       {tickets.map ((item, index)=>(
         <TicketCard key={index} ticket={item} onDelete={handleDelete} index={index} />
       ))}
